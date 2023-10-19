@@ -1,0 +1,53 @@
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL, 
+    email VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    image_path VARCHAR(255),  -- You can store the image path here
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE product_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+INSERT INTO categories (name, description) VALUES
+('Garments', 'Clothing and apparel'),
+('Mobiles', 'Mobile phones and accessories'),
+('Laptops', 'Laptop computers and accessories');
+
+
+INSERT INTO products (category_id, name, description, price, image_path) VALUES
+(1, 'T-shirt', 'Cotton T-shirt', 19.99, 'tshirt.jpg'),
+(1, 'Jeans', 'Blue denim jeans', 29.99, 'jeans.jpg'),
+(2, 'Smartphone', 'Android smartphone', 299.99, 'smartphone.jpg'),
+(2, 'Headphones', 'Wireless headphones', 49.99, 'headphones.jpg'),
+(3, 'Laptop', '13-inch laptop', 799.99, 'laptop.jpg');
+
+INSERT INTO users (username, password, email, role) VALUES
+('hiten', 'Hiten', 'hiten@gmail.com', 'admin'),
+('user', 'User', 'user@gmail.com', 'user');
